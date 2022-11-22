@@ -17,8 +17,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.dicodingjetcoffee.model.Menu
 import com.example.dicodingjetcoffee.model.dummyCategory
 import com.example.dicodingjetcoffee.ui.components.CategoryIcon
+import com.example.dicodingjetcoffee.ui.components.MenuItem
 import com.example.dicodingjetcoffee.ui.components.SearchBar
 import com.example.dicodingjetcoffee.ui.components.SectionText
 import com.example.dicodingjetcoffee.ui.theme.DicodingJetCoffeeTheme
@@ -94,5 +96,22 @@ fun CategoryRow(modifier: Modifier=Modifier){
 fun CategoryRowPreview(){
     DicodingJetCoffeeTheme {
         CategoryRow()
+    }
+}
+
+@Composable
+fun MenuRow(
+    modifier: Modifier=Modifier,
+    listMenu:List<Menu>
+){
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        contentPadding = PaddingValues(horizontal = 16.dp),
+        modifier = modifier
+    ){
+        items(listMenu, key = {it.title}){ menus-> 
+            MenuItem(menu = menus)
+        }
+
     }
 }
