@@ -7,8 +7,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,11 +18,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.dicodingjetcoffee.model.Menu
+import com.example.dicodingjetcoffee.model.dummyBestSellerMenu
 import com.example.dicodingjetcoffee.model.dummyCategory
-import com.example.dicodingjetcoffee.ui.components.CategoryIcon
-import com.example.dicodingjetcoffee.ui.components.MenuItem
-import com.example.dicodingjetcoffee.ui.components.SearchBar
-import com.example.dicodingjetcoffee.ui.components.SectionText
+import com.example.dicodingjetcoffee.model.dummyMenu
+import com.example.dicodingjetcoffee.ui.components.*
 import com.example.dicodingjetcoffee.ui.theme.DicodingJetCoffeeTheme
 
 class MainActivity : ComponentActivity() {
@@ -38,10 +37,23 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun DicodingJetCoffeeApp(){
-    Column {
+    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
         JetCoffeeBanner()
-        SectionText(title = stringResource(id = R.string.section_category))
-        CategoryRow()
+        HomeSection(
+            title = stringResource(id = R.string.section_category),
+            content = { CategoryRow() }
+        )
+
+        HomeSection(
+            title = stringResource(id = R.string.section_favorite_menu),
+            content = { MenuRow(listMenu = dummyMenu) }
+        )
+        
+        HomeSection(
+            title = stringResource(id = R.string.section_best_seller_menu),
+            content = { MenuRow(listMenu = dummyBestSellerMenu) }
+        )
+
     }
 }
 
