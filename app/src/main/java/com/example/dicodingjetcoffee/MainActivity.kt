@@ -9,20 +9,23 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.dicodingjetcoffee.model.Menu
-import com.example.dicodingjetcoffee.model.dummyBestSellerMenu
-import com.example.dicodingjetcoffee.model.dummyCategory
-import com.example.dicodingjetcoffee.model.dummyMenu
+import com.example.dicodingjetcoffee.model.*
 import com.example.dicodingjetcoffee.ui.components.*
 import com.example.dicodingjetcoffee.ui.theme.DicodingJetCoffeeTheme
+import com.example.dicodingjetcoffee.ui.theme.LightGray
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,24 +40,27 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun DicodingJetCoffeeApp(){
-    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-        JetCoffeeBanner()
-        HomeSection(
-            title = stringResource(id = R.string.section_category),
-            content = { CategoryRow() }
-        )
+    Scaffold(bottomBar = { BottomNav() }) {
+        Column(modifier = Modifier.verticalScroll(rememberScrollState()).padding(it)) {
+            JetCoffeeBanner()
+            HomeSection(
+                title = stringResource(id = R.string.section_category),
+                content = { CategoryRow() }
+            )
 
-        HomeSection(
-            title = stringResource(id = R.string.section_favorite_menu),
-            content = { MenuRow(listMenu = dummyMenu) }
-        )
-        
-        HomeSection(
-            title = stringResource(id = R.string.section_best_seller_menu),
-            content = { MenuRow(listMenu = dummyBestSellerMenu) }
-        )
+            HomeSection(
+                title = stringResource(id = R.string.section_favorite_menu),
+                content = { MenuRow(listMenu = dummyMenu) }
+            )
 
+            HomeSection(
+                title = stringResource(id = R.string.section_best_seller_menu),
+                content = { MenuRow(listMenu = dummyBestSellerMenu) }
+            )
+
+        }
     }
+
 }
 
 @Preview(showBackground = true)
@@ -127,3 +133,47 @@ fun MenuRow(
 
     }
 }
+
+@Composable
+fun BottomNav(modifier: Modifier=Modifier){
+    BottomNavigation(
+        modifier=modifier,
+        backgroundColor = MaterialTheme.colors.background,
+        contentColor = MaterialTheme.colors.primary,
+    ) {
+        val navigationItems= listOf<BottomNavOptions>(
+            BottomNavOptions(
+                title = stringResource(id = R.string.menu_home),
+                icon = Icons.Default.Home
+            ),
+
+            BottomNavOptions(
+                title = stringResource(id = R.string.menu_favorite),
+                icon = Icons.Default.Favorite
+            ),
+
+            BottomNavOptions(
+                title = stringResource(id = R.string.menu_profile),
+                icon = Icons.Default.AccountCircle
+            )
+        )
+
+        navigationItems.map {
+            BottomNavigationItem(
+                selected = it.title==navigationItems[0].title,
+                onClick = {  },
+                unselectedContentColor = LightGray,
+                icon = {
+                    Image(imageVector = it.icon, contentDescription = it.title )
+                },
+                
+                label = {
+                    Text(text = it.title)
+                }
+            )
+        }
+    }
+
+}
+
+
